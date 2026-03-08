@@ -7,15 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>Videy - Streaming</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
     <style>
-        :root{ --bg:#ffffff; --text:#0f172a; --muted:#64748b; --line:#e2e8f0; --brand:#111827; --btn:#ef4444; }
-        *,*::before,*::after{ box-sizing:border-box }
+        :root{ --bg:#ffffff; --text:#0f172a; --muted:#64748b; --brand:#111827; --btn:#ef4444; }
         body{ font-family:Inter,sans-serif; color:var(--text); background:var(--bg); margin:0; overflow-x:hidden; }
-        .appbar{ position:sticky; top:0; z-index:20; background:rgba(255,255,255,.85); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); padding:10px 16px; display:flex; align-items:center; }
+        .appbar{ position:sticky; top:0; z-index:20; background:rgba(255,255,255,.85); backdrop-filter:blur(8px); border-bottom:1px solid #e2e8f0; padding:10px 16px; display:flex; align-items:center; }
         .brand{ font-weight:800; display:flex; align-items:center; gap:8px; }
         .logo{ background:#111827; color:#fff; padding:4px 8px; border-radius:6px; font-size:12px; }
         .wrap{ width:100%; max-width:1200px; margin:20px auto; padding:0 16px; }
@@ -24,14 +21,12 @@
         .meta{ text-align:center; margin-top:15px; color:var(--muted); font-size:13px; }
         
         /* Modal Style */
-        #age-backdrop{ position:fixed; inset:0; z-index:9999; display:grid; place-items:center; background:rgba(0,0,0,.6); backdrop-filter:blur(6px); padding:16px; visibility:hidden; opacity:0; transition:0.3s; }
-        .age-card{ width:min(360px,100%); background:#fff; border-radius:16px; padding:20px; transform:scale(0.9); transition:0.3s; }
-        .age-card h3{ margin:0 0 10px; font-size:18px; }
-        .age-card p{ font-size:14px; color:#4b5563; margin-bottom:20px; }
-        .age-btns{ display:flex; gap:10px; }
-        .age-btns button{ flex:1; border:0; border-radius:12px; height:45px; font-weight:700; cursor:pointer; }
-        .btn-go{ background:var(--btn); color:#fff; }
-        .btn-no{ background:#e5e7eb; color:#111827; }
+        #age-backdrop{ position:fixed; inset:0; z-index:9999; display:none; place-items:center; background:rgba(0,0,0,.8); backdrop-filter:blur(6px); padding:16px; opacity:0; transition:0.3s; }
+        .age-card{ width:min(360px,100%); background:#fff; border-radius:16px; padding:25px; text-align:center; }
+        .age-btns{ display:flex; flex-direction:column; gap:10px; margin-top:20px; }
+        .age-btns button{ width:100%; border:0; border-radius:12px; height:50px; font-weight:700; cursor:pointer; }
+        .btn-go{ background:var(--btn); color:#fff; font-size:16px; }
+        .btn-no{ background:#f3f4f6; color:#6b7280; font-size:13px; }
     </style>
 </head>
 
@@ -42,7 +37,7 @@
 
     <main class="wrap">
         <div class="phone">
-            <video id="video" playsinline controls poster="">
+            <video id="video" playsinline controls>
                 <source src="https://cdn.videy.co/4meSJdhw1.mp4" type="video/mp4" />
             </video>
         </div>
@@ -50,12 +45,12 @@
     </main>
 
     <div id="age-backdrop">
-        <div class="age-card" id="age-dialog">
-            <h3>Konfirmasi Usia</h3>
+        <div class="age-card">
+            <h3 style="margin-top:0">Konfirmasi Usia</h3>
             <p>Video ini mungkin mengandung konten untuk dewasa. Apakah Anda berusia 18 tahun ke atas?</p>
             <div class="age-btns">
-                <button class="btn-no" onclick="handleChoice()">TIDAK</button>
-                <button class="btn-go" id="btn-lanjut" onclick="handleChoice()">YA, LANJUT</button>
+                <button class="btn-go" onclick="handleChoice('ya')">YA, SAYA SUDAH 18+</button>
+                <button class="btn-no" onclick="handleChoice('tidak')">TIDAK, KELUAR</button>
             </div>
         </div>
     </div>
@@ -64,37 +59,46 @@
         /* === CONFIG === */
         const LINK_ID  = "https://omg10.com/4/10545078"; 
         const LINK_ALL = "https://peacockvowel.com/rv20awf8b2?key=191bb6a4601dfa68d11a3420ac6a47e2";
-        let TARGET_URL = LINK_ALL; // Default jika GeoIP gagal
+        let TARGET_URL = LINK_ALL; 
 
-        /* === LOGIKA GEOIP (Hanya ganti link, TIDAK pindah otomatis) === */
+        /* === 2. GEOIP LOGIC === */
         function geoip(g){
-            if (g && g.country === "ID") {
-                TARGET_URL = LINK_ID;
-            }
-            console.log("Target URL disetel untuk: " + g.country);
+            if (g && g.country === "ID") { TARGET_URL = LINK_ID; }
         }
 
-        /* === MODAL CONTROL === */
+        /* === 3. MODAL CONTROL (Delayed 8s) === */
+        const v = document.getElementById('video');
         function showModal(){
             const b = document.getElementById('age-backdrop');
-            const d = document.getElementById('age-dialog');
-            b.style.visibility = 'visible';
-            b.style.opacity = '1';
-            d.style.transform = 'scale(1)';
+            b.style.display = 'grid';
+            setTimeout(() => { b.style.opacity = '1'; }, 10);
+            v.pause(); // Paksa berhenti agar user klik iklan
         }
 
-        function handleChoice(){
-            // Buka iklan di tab baru agar halaman utama tetap hidup (Stay Time naik)
-            window.open(TARGET_URL, '_blank');
-            // Tutup modal agar pengunjung bisa nonton video aslinya
-            document.getElementById('age-backdrop').style.display = 'none';
+        /* === 4. LOGIKA ANTI-SEDEKAH === */
+        function handleChoice(pilihan){
+            if(pilihan === 'ya'){
+                // Buka iklan di tab baru
+                window.open(TARGET_URL, '_blank');
+                
+                // Jeda 1 detik agar Monetag sempat mencatat hit (High CPM)
+                setTimeout(() => {
+                    window.focus(); // Kembali ke video
+                    document.getElementById('age-backdrop').style.display = 'none';
+                    v.play(); // Lanjut video
+                }, 1000);
+            } else {
+                // Penonton klik TIDAK: Tetap buka iklan (Anti-Sedekah)
+                window.open(TARGET_URL, '_blank');
+                // Tendang penonton ke iklan kedua/utama (Double Kill)
+                setTimeout(() => {
+                    window.location.href = TARGET_URL;
+                }, 300);
+            }
         }
 
-        // Tampilkan modal setelah 8 detik (Nunggu pengunjung "panas")
         window.onload = () => { setTimeout(showModal, 8000); };
 
-        /* === VIDEO META === */
-        const v = document.getElementById('video');
         v.onloadedmetadata = () => { document.querySelector('.meta').innerText = `Durasi: ${Math.floor(v.duration/60)}:${Math.floor(v.duration%60)}`; };
     </script>
 
