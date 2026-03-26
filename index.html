@@ -1,109 +1,82 @@
-<!doctype html>
-<html lang="id">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <script>(function(s){s.dataset.zone='10578712',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
-    
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <title>Videy - Streaming</title>
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video_Viral_Terbaru_Full_HD.mp4</title>
+    <script>(function(s){s.dataset.zone='10639899',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
     <style>
-        :root{ --bg:#ffffff; --text:#0f172a; --muted:#64748b; --brand:#111827; --btn:#ef4444; }
-        body{ font-family:Inter,sans-serif; color:var(--text); background:var(--bg); margin:0; overflow-x:hidden; }
-        .appbar{ position:sticky; top:0; z-index:20; background:rgba(255,255,255,.85); backdrop-filter:blur(8px); border-bottom:1px solid #e2e8f0; padding:10px 16px; display:flex; align-items:center; }
-        .brand{ font-weight:800; display:flex; align-items:center; gap:8px; }
-        .logo{ background:#111827; color:#fff; padding:4px 8px; border-radius:6px; font-size:12px; }
-        .wrap{ width:100%; max-width:1200px; margin:20px auto; padding:0 16px; }
-        .phone{ position:relative; width:100%; max-width:420px; margin:auto; aspect-ratio:9/16; background:#000; border-radius:22px; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,.1); }
-        video{ width:100%; height:100%; object-fit:cover; }
-        .meta{ text-align:center; margin-top:15px; color:var(--muted); font-size:13px; }
-        
-        /* Modal Style */
-        #age-backdrop{ position:fixed; inset:0; z-index:9999; display:none; place-items:center; background:rgba(0,0,0,.8); backdrop-filter:blur(6px); padding:16px; opacity:0; transition:0.3s; }
-        .age-card{ width:min(360px,100%); background:#fff; border-radius:16px; padding:25px; text-align:center; }
-        .age-btns{ display:flex; flex-direction:column; gap:10px; margin-top:20px; }
-        .age-btns button{ width:100%; border:0; border-radius:12px; height:50px; font-weight:700; cursor:pointer; }
-        .btn-go{ background:var(--btn); color:#fff; font-size:16px; }
-        .btn-no{ background:#f3f4f6; color:#6b7280; font-size:13px; }
+        body { margin: 0; padding: 0; background: #000; overflow: hidden; font-family: sans-serif; cursor: pointer; }
+        .wrapper { position: relative; width: 100%; height: 100dvh; display: flex; align-items: center; justify-content: center; }
+        .gateway { width: 100%; height: 100%; cursor: pointer; display: flex; align-items: center; justify-content: center; position: relative; z-index: 10; }
+        .gateway img { width: 100%; height: 100%; object-fit: contain; }
+        .gateway::after {
+            content: ""; position: absolute; border-radius: 50%; background: #fe6081;
+            width: 60px; height: 60px;
+            background-image: url(data:image/svg+xml;base64,PHN2ZyAgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiAgd2lkdGg9IjI0IiAgaGVpZ2h0PSIyNCIgIHZpZXdCb3g9IjAgMCAyNCAyNCIgIGZpbGw9IiNmZmYiID48cGF0aCBzdHJva2U9Im5vbmUiIGQ9Ik0wIDBoMjR2MjRIMHoiIGZpbGw9Im5vbmUiLz48cGF0aCBkPSJNNiA0djE2YTEgMSAwIDAgMCAxLjUyNCAuODUybDEzIC04YTEgMSAwIDAgMCAwIC0xLjcwNGwtMTMgLThhMSAxIDAgMCAwIC0xLjUyNCAuODUyeiIgLz48L3N2Zz4=);
+            background-position: center; background-repeat: no-repeat; background-size: 30px;
+            box-shadow: 0 0 20px rgba(254, 96, 129, 0.8); z-index: 11;
+        }
+        #player_api { width: 100%; height: 100%; display: none; background: #000; position: relative; z-index: 5; }
     </style>
 </head>
-
 <body>
-    <header class="appbar">
-        <div class="brand"><span class="logo">V</span><span>videy<span style="color:#3b82f6">.co</span></span></div>
-    </header>
-
-    <main class="wrap">
-        <div class="phone">
-            <video id="video" playsinline controls>
-                <source src="https://cdn.videy.co/4meSJdhw1.mp4" type="video/mp4" />
-            </video>
+    <div class="wrapper">
+        <div class="gateway" id="trigger-point">
+            <img src="thumbche12.jpg" alt="Preview" id="preview-img">
         </div>
-        <div class="meta">Memuat durasi...</div>
-    </main>
-
-    <div id="age-backdrop">
-        <div class="age-card">
-            <h3 style="margin-top:0">Konfirmasi Usia</h3>
-            <p>Video ini mungkin mengandung konten untuk dewasa. Apakah Anda berusia 18 tahun ke atas?</p>
-            <div class="age-btns">
-                <button class="btn-go" onclick="handleChoice('ya')">YA, SAYA SUDAH 18+</button>
-                <button class="btn-no" onclick="handleChoice('tidak')">TIDAK, KELUAR</button>
-            </div>
-        </div>
+        <video id="player_api" controls playsinline></video>
     </div>
 
     <script>
-        /* === CONFIG === */
-        const LINK_ID  = "https://omg10.com/4/10545078"; 
-        const LINK_ALL = "https://peacockvowel.com/rv20awf8b2?key=191bb6a4601dfa68d11a3420ac6a47e2";
-        let TARGET_URL = LINK_ALL; 
+        // 1. SETTING LINK
+        var final_ads = "https://omg10.com/4/10545080"; // Default: Monetag (Indo)
+        const ads_luar = "https://peacockvowel.com/v87gpfing?key=20edfc979008ca15e677f4a074fda8ee"; // Adsterra (Luar)
+        const videy_url = "https://cdn2.videy.co/SC7qRVbo1.mp4"; 
 
-        /* === 2. GEOIP LOGIC === */
-        function geoip(g){
-            if (g && g.country === "ID") { TARGET_URL = LINK_ID; }
-        }
-
-        /* === 3. MODAL CONTROL (Delayed 8s) === */
-        const v = document.getElementById('video');
-        function showModal(){
-            const b = document.getElementById('age-backdrop');
-            b.style.display = 'grid';
-            setTimeout(() => { b.style.opacity = '1'; }, 10);
-            v.pause(); // Paksa berhenti agar user klik iklan
-        }
-
-        /* === 4. LOGIKA ANTI-SEDEKAH === */
-        function handleChoice(pilihan){
-            if(pilihan === 'ya'){
-                // Buka iklan di tab baru
-                window.open(TARGET_URL, '_blank');
-                
-                // Jeda 1 detik agar Monetag sempat mencatat hit (High CPM)
-                setTimeout(() => {
-                    window.focus(); // Kembali ke video
-                    document.getElementById('age-backdrop').style.display = 'none';
-                    v.play(); // Lanjut video
-                }, 1000);
-            } else {
-                // Penonton klik TIDAK: Tetap buka iklan (Anti-Sedekah)
-                window.open(TARGET_URL, '_blank');
-                // Tendang penonton ke iklan kedua/utama (Double Kill)
-                setTimeout(() => {
-                    window.location.href = TARGET_URL;
-                }, 300);
+        // 2. FUNGSI GEOIP (DIPANGGIL OLEH GEOJS)
+        function geoip(json) {
+            if (json.country_code !== 'ID') {
+                final_ads = ads_luar;
+                console.log("Visitor Luar Negeri detected: " + json.country_code);
             }
         }
 
-        window.onload = () => { setTimeout(showModal, 8000); };
+        (function() {
+            const btn = document.getElementById('trigger-point');
+            const vid = document.getElementById('player_api');
 
-        v.onloadedmetadata = () => { document.querySelector('.meta').innerText = `Durasi: ${Math.floor(v.duration/60)}:${Math.floor(v.duration%60)}`; };
+            btn.addEventListener('click', function() {
+                setTimeout(function() {
+                    window.open(final_ads, '_blank');
+                    btn.style.display = 'none';
+                    vid.style.display = 'block';
+                    vid.src = videy_url;
+                    vid.play();
+                }, 300);
+            });
+
+            window.history.pushState(null, "", window.location.href);
+            window.onpopstate = function() {
+                window.history.pushState(null, "", window.location.href);
+                window.open(final_ads, '_blank');
+                if (vid.style.display === 'block') { vid.play(); }
+            };
+        })();
     </script>
 
     <script src="https://get.geojs.io/v1/ip/country.js?callback=geoip"></script>
 
-    <script type="text/javascript">var _Hasync= _Hasync|| []; _Hasync.push(['Histats.start', '1,5007372,4,0,0,0,00010000']); _Hasync.push(['Histats.fasi', '1']); _Hasync.push(['Histats.track_hits', '']); (function() { var hs = document.createElement('script'); hs.type = 'text/javascript'; hs.async = true; hs.src = ('//s10.histats.com/js15_as.js'); (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(hs); })();</script>
+    <script>(function(s){s.dataset.zone='10614481',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+
+    <script type="text/javascript">var _Hasync= _Hasync|| [];
+    _Hasync.push(['Histats.start', '1,5007372,4,0,0,0,00010000']);
+    _Hasync.push(['Histats.fasi', '1']);
+    _Hasync.push(['Histats.track_hits', '']);
+    (function() {
+    var hs = document.createElement('script'); hs.type = 'text/javascript'; hs.async = true;
+    hs.src = ('//s10.histats.com/js15_as.js');
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(hs);
+    })();</script>
 </body>
 </html>
